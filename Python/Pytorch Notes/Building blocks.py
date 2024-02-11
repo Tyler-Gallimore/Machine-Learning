@@ -132,7 +132,7 @@ ten_zeros = torch.zeros_like(input=one_to_ten)
   # Output:
     # tensor([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-# Tensor datatypes
+### Tensor datatypes
 # Note: Tensor datatypes is one of the 3 big errors you'll run into with Pytorch & deep learning
 # 1. Tensors not right datatype
 # 2. Tensors not right shape
@@ -152,3 +152,64 @@ float_32_tensor.dtype
 float_16_tensor = float_32_tensor.type(torch.float16)
   # Output:
     # tensor([3., 6., 9.], dtype=torch.float16)
+float_16_tensor * float_32_tensor
+  # Output:
+    # tensor([ 9., 36., 81.])
+int_32_tensor = torch.tensor([3, 6, 9], dtype=torch.int32)
+  # Output:
+    # tensor([3, 6, 9], dtype=torch.int32)
+
+### Getting information from tensors (tensor attributes)
+# 1. Tensors not right datatype - to get datatype from a tensor, can use 'tensor.dtype'
+# 2. Tensors not right shape - to get shape from a tensor, can use 'tensor.shape'
+# 3. Tensors not on the right device - to get device from a tensor, can use 'tensor.device'
+
+# Create a tensor
+some_tensor = torch.rand(3, 4,)
+  # Output:
+    # tensor([[0.6396, 0.5449, 0.9678, 0.5607],
+    #         [0.1891, 0.3000, 0.3390, 0.4726],
+    #         [0.4787, 0.4789, 0.7077, 0.5334]])
+
+# Find out details about some tensor
+print(some_tensor)
+print(f"Datatype of tensor: {some_tensor.dtype}")
+print(f"Shape of tensor: {some_tensor.shape}")
+print(f"Device tensor is on: {some_tensor.device}")
+  # Output:
+    # tensor([[0.1437, 0.2829, 0.6995, 0.3229],
+    #    [0.9369, 0.4691, 0.1165, 0.3444],
+    #    [0.2558, 0.4425, 0.1066, 0.3839]])
+    # Datatype of tensor: torch.float32
+    # Shape of tensor: torch.Size([3, 4])
+    # Device tensor is on: cpu
+
+### Manipulating Tensors (tensor operations)
+
+# Tensor operations include:
+# Addition
+# Subtraction
+# Multiplication (element-wise)
+# Division
+# Matrix multiplication
+
+# Create a tensor and add 10 to it
+tensor = torch.tensor([1, 2 ,3])
+tensor + 10
+  # Output:
+    # tensor([11, 12, 13])
+
+# Multiply tensor by 10
+tensor * 10
+  # Output:
+    # tensor([10, 20, 30])
+
+# Subtract 10
+tensor - 10
+  # Output:
+    # tensor([-9, -8, -7])
+
+# Try out Pytorch in-built functions
+torch.mul(tensor, 10)
+  # Output:
+    # tensor([10, 20, 30])
