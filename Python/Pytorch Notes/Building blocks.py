@@ -213,3 +213,53 @@ tensor - 10
 torch.mul(tensor, 10)
   # Output:
     # tensor([10, 20, 30])
+
+### Matrix multiplication
+# Two main ways of performing multiplcation in neural networks and deep learning:
+
+# 1. Element-wise multiplication
+# 2. Matrix multiplication (dot product)
+
+# There are two main rules that performing matrix multiplication needs to satisfy:
+#  1. The **inner dimensions** must match:
+#    '(3, 2) @ (3, 2)' won't work
+#    '(2, 3) @ (3, 2)' will work
+#    '(3, 2) @ (2, 3)' will work
+#  2. The resulting matrix has the shape of the **outer dimenstions**:
+#    '(2, 3) @ (3, 2)' -> '(2, 2)'
+#    '(3, 2) @ (2, 3)' -> '(3, 3)'
+
+# Element wise multiplication
+print(tensor, "*", tensor)
+print(f"Equals: {tensor * tensor}")
+  # Output:
+    # tensor([1, 2, 3]) * tensor([1, 2, 3])
+    # Equals: tensor([1, 4, 9])
+
+# Matrix multiplication
+torch.matmul(tensor, tensor)
+  # Output:
+    # tensor(14)
+
+# Matrix multiplication by hand
+# 1*1 + 2*2 + 3*3
+  # Output:
+    # 14
+
+# Time difference for using loop to matmul
+%%time
+value = 0
+for i in range(len(tensor)):
+  value += tensor[i] * tensor[i]
+print(value)
+  # Output:
+    # tensor(14)
+    # CPU times: user 1.46 ms, sys: 0 ns, total: 1.46 ms
+    # Wall time: 1.47 ms
+
+%%time
+torch.matmul(tensor, tensor)
+  # Output:
+    # CPU times: user 100 µs, sys: 8 µs, total: 108 µs
+    # Wall time: 114 µs
+    # tensor(14)
