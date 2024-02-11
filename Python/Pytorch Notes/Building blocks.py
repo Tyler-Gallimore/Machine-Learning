@@ -263,3 +263,60 @@ torch.matmul(tensor, tensor)
     # CPU times: user 100 µs, sys: 8 µs, total: 108 µs
     # Wall time: 114 µs
     # tensor(14)
+
+### One of the most common erros in deep learning: shape errors
+# Shapes for matrix multiplication
+tensor_a = torch.tensor([[1, 2],
+                         [3, 4],
+                         [5, 6]])
+
+tensor_b = torch.tensor([[7, 10],
+                         [8, 11],
+                         [9, 12]])
+
+torch.mm(tensor_a, tensor_b) # torch.mm is the same as torch.matmul (it's an alias for writing less code)
+  # Output:
+    # ---------------------------------------------------------------------------
+    # RuntimeError                              Traceback (most recent call last)
+    # <ipython-input-6-eddc2caa8b2b> in <cell line: 11>()
+    #       9                          [9, 12]])
+    #      10 
+    # ---> 11 torch.mm(tensor_a, tensor_b) # torch.mm is the same as torch.matmul (it's an alias for writing less code)
+
+    # RuntimeError: mat1 and mat2 shapes cannot be multiplied (3x2 and 3x2)
+
+# To fix our tensor shape issues, we can manipulate the shape of one of our tensors using a **transpose**
+# A **transpose** swithes the axes or dimensions of a given tensor 
+tensor_b, tensor_b.shape
+  # Output:
+    # (tensor([[ 7, 10],
+    #          [ 8, 11],
+    #          [ 9, 12]]),
+    # torch.Size([3, 2]))
+
+tensor_b.T, tensor_b.T.shape
+  # Output:
+    # (tensor([[ 7,  8,  9],
+    #          [10, 11, 12]]),
+    # torch.Size([2, 3]))
+
+# The matrix multiplication operation when tensor_b is transposed
+print(f"Original shapes: tensor_a = {tensor_a.shape}, tensor_b = {tensor_b.shape}")
+print(f"New shapes: tensor_a = {tensor_a.shape} (same shape as above),  tensor_b.T = {tensor_b.T.shape}")
+print(f"Multiplying: {tensor_a.shape} @ {tensor_b.T.shape} <- innter dimensions must match")
+print("Output:\n")
+output = torch.matmul(tensor_a, tensor_b.T)
+print(output)
+print(f"\nOutput shape: {output.shape}")
+  # Output:
+    # Original shapes: tensor_a = torch.Size([3, 2]), tensor_b = torch.Size([3, 2])
+    # New shapes: tensor_a = torch.Size([3, 2]) (same shape as above),  tensor_b.T = torch.Size([2, 3])
+    # Multiplying: torch.Size([3, 2]) @ torch.Size([2, 3]) <- innter dimensions must match
+    # Output:
+
+    # tensor([[ 27,  30,  33],
+    #         [ 61,  68,  75],
+    #         [ 95, 106, 117]])
+
+    # Output shape: torch.Size([3, 3])
+
