@@ -320,3 +320,81 @@ print(f"\nOutput shape: {output.shape}")
 
     # Output shape: torch.Size([3, 3])
 
+### Finding the min, max, mean, sum, etc (tensor aggregation)
+# Create a tensor
+x = torch.arange(1, 100, 10)
+
+# Find the min
+torch.min(x), x.min()
+  # Output:
+  #  (tensor(0), tensor(0))
+
+# Find the max
+torch.max(x), x.max()
+  # Output:
+    # (tensor(90), tensor(90))
+
+# Find the mean - note: the torch.mean() function requires a tensor of float32 datatype to work
+torch.mean(x.type(torch.float32)), x.type(torch.float32).mean()
+  # Output:
+    # (tensor(45.), tensor(45.))
+
+# Find the sum
+torch.sum(x), x.sum()
+  # Output:
+    # (tensor(450), tensor(450))
+
+### Finding the positional min and max
+
+# Find the position in tensor that has the minimum value with argmin() -> returns index postion of target tensor where the minimum value occurs
+x.argmin()
+  # Output:
+    # tensor(0)
+
+# Find the postion in tensor that has the maxium value with argmax()
+x.argmax()
+  # Output:
+    # tensor(9)
+
+## Reshaping, stacking, squeezing and unsqueezing tensors
+
+# Reshaping - reshapes an input tensor to a defined shape
+# View - Return a view of an input tensor of certain shape but keep the same memory as the original tensor
+# Stacking - combine multiple tensors on top of each other (vstack) or side by side (hstack)
+# Squeeze - removes all '1' dimensions from a tensor
+# Unsqueeze - adds a '1' dimension to a target tensor
+# Permute - Return a view of the input with dimensions permuted (swapped) in a certain way
+
+# Let's create a tensor
+import torch
+x = torch.arange(1, 10)
+x, x.shape
+  # Output:
+    # (tensor([1, 2, 3, 4, 5, 6, 7, 8, 9]), torch.Size([9]))
+
+# Add an extra dimension
+x_reshaped = x.reshape(1, 9)
+x_reshaped, x_reshaped.shape
+  # Output:
+    # (tensor([[1, 2, 3, 4, 5, 6, 7, 8, 9]]), torch.Size([1, 9]))
+
+# Change the view
+z = x.view(1, 9)
+z, z.shape
+  # Output:
+    # (tensor([[1, 2, 3, 4, 5, 6, 7, 8, 9]]), torch.Size([1, 9]))
+
+# Changing z changes x (because a view of a tensor shares the same memory as the original input)
+z[:, 0] = 5
+z, x
+  # Output:
+    # (tensor([[5, 2, 3, 4, 5, 6, 7, 8, 9]]), tensor([5, 2, 3, 4, 5, 6, 7, 8, 9]))
+
+# Stack tensors on top of each other
+x_stacked = torch.stack([x, x, x, x], dim=0)
+x_stacked
+  # Output:
+    # tensor([[5, 2, 3, 4, 5, 6, 7, 8, 9],
+    #         [5, 2, 3, 4, 5, 6, 7, 8, 9],
+    #         [5, 2, 3, 4, 5, 6, 7, 8, 9],
+    #         [5, 2, 3, 4, 5, 6, 7, 8, 9]])
