@@ -398,3 +398,45 @@ x_stacked
     #         [5, 2, 3, 4, 5, 6, 7, 8, 9],
     #         [5, 2, 3, 4, 5, 6, 7, 8, 9],
     #         [5, 2, 3, 4, 5, 6, 7, 8, 9]])
+
+# torch.squeeze() - removes all single dimensions from a target tensor
+print(f"Previous tensor: {x_reshaped}")
+print(f"Previous shape: {x_reshaped.shape}")
+
+# Remove extra dimensions from x_reshaped
+x_squeezed = x_reshaped.squeeze()
+print(f"\nNew tensor: {x_squeezed}")
+print(f"New shape: {x_squeezed.shape}")
+  # Output:
+    # Previous tensor: tensor([[1, 2, 3, 4, 5, 6, 7, 8, 9]])
+    # Previous shape: torch.Size([1, 9])
+
+    # New tensor: tensor([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    # New shape: torch.Size([9])
+
+# torch.unsqueeze() - adds a single dimension to a target tensor at a specific dim (dimension)
+print(f"Previous target: {x_squeezed}")
+print(f"Previous shape: {x_squeezed.shape}")
+
+# Add an extra dimension with unsqueeze
+x_unsqueezed = x_squeezed.unsqueeze(dim=0)
+print(f"\nNew tensor: {x_unsqueezed}")
+print(f"New shape: {x_unsqueezed.shape}")
+  # Output:
+    # Previous target: tensor([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    # Previous shape: torch.Size([9])
+
+    # New tensor: tensor([[1, 2, 3, 4, 5, 6, 7, 8, 9]])
+    # New shape: torch.Size([1, 9])
+
+# torch.permute - rearranges the dimension of a target tensor in a specified order
+x_original = torch.rand(size=(224, 224, 3)) # [height, width, color_channels]
+
+# Permute the original tensor to rearragne the axis (or dim) order
+x_permuted = x_original.permute(2, 0, 1) # shifts axis 0->1, 1->2, 2->0
+
+print(f"Previous shape: {x_original.shape}")
+print(f"New shape: {x_permuted.shape}") # [color_channels, height, width]
+  # Output:
+    # Previous shape: torch.Size([224, 224, 3])
+    # New shape: torch.Size([3, 224, 224])
