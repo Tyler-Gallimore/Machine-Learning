@@ -440,3 +440,64 @@ print(f"New shape: {x_permuted.shape}") # [color_channels, height, width]
   # Output:
     # Previous shape: torch.Size([224, 224, 3])
     # New shape: torch.Size([3, 224, 224])
+
+## Indexing (selecting data from tensors)
+
+# Indexing with Pytorch is similar to indexing with NumPy
+
+# Create a tensor
+import torch
+x = torch.arange(1, 10).reshape(1, 3, 3)
+x, x.shape
+  # Output:
+    # (tensor([[[1, 2, 3],
+    #           [4, 5, 6],
+    #           [7, 8, 9]]]),
+    # torch.Size([1, 3, 3]))
+
+# Let's index on our new tensor
+x[0]
+  # Output:
+    # tensor([[1, 2, 3],
+    #         [4, 5, 6],
+    #         [7, 8, 9]])
+
+# Let's index on the middle bracket (dim=1)
+x[0, 0]
+  # Output:
+    # tensor([1, 2, 3])
+
+# Let's index on the most inner bracket (last dimension)
+x[0, 2, 2]
+  # Output:
+    # tensor(9)
+
+# You can also use ":" to select "all" of a target dimension
+x[:, 0]
+  # Output:
+    # tensor([[1, 2, 3]])
+
+# Get all values of 0th and 1st dimensions but only index 1 of 2nd dimension
+x[:, :, 1]
+  # Output:
+    # tensor([[2, 5, 8]])
+
+# Get all values of the 0 dimention but only the 1 index value of the 1st and 2nd dimension
+x[:, 1, 1]
+  # Output:
+    # tensor([5])
+
+# Get index 0 of 0th and 1st dimension and all values of 2nd dimension
+x[0, 0, :]
+  # Output:
+    # tensor([1, 2, 3])
+
+# Index on x to return 9
+x[0, 2, 2]
+
+# Index on x to return 3, 6, 9
+x[0, :, 2:3]
+  # Output:
+    # tensor([[3],
+    #         [6],
+    #         [9]])
