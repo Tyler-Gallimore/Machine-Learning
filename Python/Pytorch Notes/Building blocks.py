@@ -542,3 +542,57 @@ tensor, numpy_tensor
   # Output:
     # (tensor([2., 2., 2., 2., 2., 2., 2.]),
     #  array([1., 1., 1., 1., 1., 1., 1.], dtype=float32))
+
+## Reproducbility (trying to take the random out of random)
+
+# In short how a neural network learns:
+# 'start with random numbers -> tensor operations -> update random numbers to try and make them better representations of the data -> again -> again -> again...'
+
+# To reduce the randomness in neural networks and Pytorch comes a concept of a **random seed**.
+# Essentially what the random seed does is "flavour" the randomness.
+
+import torch
+
+# Create two random tensors
+random_tensor_A = torch.rand(3, 4)
+random_tensor_B = torch.rand(3, 4)
+
+print(random_tensor_A)
+print(random_tensor_B)
+print(random_tensor_A == random_tensor_B)
+  # Output:
+    # tensor([[0.4016, 0.5288, 0.4627, 0.5267],
+    #         [0.3326, 0.3860, 0.0616, 0.3697],
+    #         [0.5452, 0.2601, 0.5551, 0.5930]])
+    # tensor([[0.9441, 0.2256, 0.0439, 0.2187],
+    #         [0.4927, 0.5350, 0.5622, 0.4081],
+    #         [0.4948, 0.7445, 0.1453, 0.1287]])
+    # tensor([[False, False, False, False],
+    #         [False, False, False, False],
+    #         [False, False, False, False]])
+
+# Let's make some random but reproducible tensors
+import torch
+
+# Set the random seed
+RANDOM_SEED = 42
+torch.manual_seed(RANDOM_SEED)
+
+random_tensor_C = torch.rand(3, 4)
+
+torch.manual_seed(RANDOM_SEED)
+random_tensor_D = torch.rand(3, 4)
+
+print(random_tensor_C)
+print(random_tensor_D)
+print(random_tensor_C == random_tensor_D)
+  # Output:
+    # tensor([[0.8823, 0.9150, 0.3829, 0.9593],
+    #         [0.3904, 0.6009, 0.2566, 0.7936],
+    #         [0.9408, 0.1332, 0.9346, 0.5936]])
+    # tensor([[0.8823, 0.9150, 0.3829, 0.9593],
+    #         [0.3904, 0.6009, 0.2566, 0.7936],
+    #         [0.9408, 0.1332, 0.9346, 0.5936]])
+    # tensor([[True, True, True, True],
+    #         [True, True, True, True],
+    #         [True, True, True, True]])
