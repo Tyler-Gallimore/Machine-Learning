@@ -140,13 +140,21 @@ from torch import nn
 class LinearRegressionModel(nn.Module): # <- almost everything in PyTorch inherits from nn.Module
   def __init__(self):
     super().__init__()
-    self.weights = nn.Parameter(torch.randn(1,
-                                            requires_grad=True,
-                                            dtype=torch.float))
-    self.bias = nn.Parameter(torch.randn(1,
-                                         requires_grad=True,
-                                         dtype=torch.float))
+    self.weights = nn.Parameter(torch.randn(1, # <- start with a random weight and try to adjust it to the ideal weight
+                                            requires_grad=True, # <- can this parameter be updated via gradient descent?
+                                            dtype=torch.float)) # <- PyTorch loves the datatype torch.float32
+    self.bias = nn.Parameter(torch.randn(1, # <- start with a random bias and try to adjust it to the ideal bias
+                                         requires_grad=True, # <- can this parameter be updated via gradient descent?
+                                         dtype=torch.float)) # <- PyTorch loves the datatype torch.float32
     
     # Forward method to define the computation in the model
     def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data
       return self.weights * x + self.bias # this is the linear regression formula
+    
+### PyTorch model building essentials
+
+# torch.nn - contains all of the building blocks for computational graphs (a neural network can be considered a computational graph)
+# torch.nn.Parameter - what parameters should our model try and learn, often a PyTorch layer from torch.nn will set these for us
+# torch.nn.Module - The base class for all neuaral network modules, if you subclass it, you should overwrite forward()
+# torch.optim - this is where the optimizers in PyTorch live, they will help with gradient descent
+# def forward() - all nn.Module subclasses require you to overrite forward(), this method defines what happens in the forward computation
