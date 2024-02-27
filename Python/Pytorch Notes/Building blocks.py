@@ -596,3 +596,36 @@ print(random_tensor_C == random_tensor_D)
     # tensor([[True, True, True, True],
     #         [True, True, True, True],
     #         [True, True, True, True]])
+
+## Running tensors and Pytorch objects on the GPUs (and making faster computations)
+
+# GPUS = faster computation on numbers, thanks to CUDA + NVIDIA hardware + PyTorch working behind the scenes to make everything hunky dory (good).
+
+### 1. Getting a GPU
+
+# 1. Easiest - Use Google Colab for a free GPU. (options to upgrade as well)
+# 2. Use your own GPU - takes a little bit of setup and requires the investment of puchasing a GPU, there's lots of options..
+# 3. Use cloud computing - GCP, AWS, Azure, these services allow you to rent computers on the cloud and access them
+
+# For 2, 3 PyTorch + GPU drivers (CUDA) takes a little bit of setting up, to do this, refer to PyTorch setup documentation
+
+### 2. Check for GPU access with PyTorch
+import torch
+torch.cuda.is_available()
+  # Output:
+    # True
+
+# For PyTorch since it's capable of running compute on the GPU or CPU, it's best practice to setup device agnostic code
+
+# E.g. run on GPU if available, else default to CPU
+
+# Setup device agnostic code
+device = "cuda" if torch.cuda.is_available() else "cpu"
+device
+  # Output:
+    # 'cuda'
+
+# Count number of devices
+torch.cuda.device_count()
+  # Output:
+    # 1
