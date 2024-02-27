@@ -247,7 +247,7 @@ torch.matmul(tensor, tensor)
     # 14
 
 # Time difference for using loop to matmul
-%%time
+# %%time
 value = 0
 for i in range(len(tensor)):
   value += tensor[i] * tensor[i]
@@ -257,7 +257,7 @@ print(value)
     # CPU times: user 1.46 ms, sys: 0 ns, total: 1.46 ms
     # Wall time: 1.47 ms
 
-%%time
+# %%time
 torch.matmul(tensor, tensor)
   # Output:
     # CPU times: user 100 µs, sys: 8 µs, total: 108 µs
@@ -501,3 +501,44 @@ x[0, :, 2:3]
     # tensor([[3],
     #         [6],
     #         [9]])
+
+# Pytorch tensors & NumPy
+
+# NumPy is a popular scientific Python numerical computing library
+# And because of this, Pytorch has functionality to interact with it.
+
+# Data in NumPy, want in Pytorch tensor -> 'torch.from_numpy(ndarray)'
+# Pytorch tensor -> NumPy -> torch.Tensor.numpy()
+
+# NumPy array to tensor
+import torch
+import numpy as np
+
+array = np.arange(1.0, 8.0)
+tensor = torch.from_numpy(array) # warning: when converting from numpy -> pytorch, pytorch reflects numpy's default datatype of float64 unless specified otherwise.
+array, tensor
+  # Output:
+    # (array([1., 2., 3., 4., 5., 6., 7.]),
+    #  tensor([1., 2., 3., 4., 5., 6., 7.], dtype=torch.float64))
+
+# Change the value of array, what will this do to 'tensor'?
+array = array + 1
+array, tensor
+  # Output:
+    # (array([2., 3., 4., 5., 6., 7., 8.]),
+    #  tensor([1., 2., 3., 4., 5., 6., 7.], dtype=torch.float64))
+
+# Tensor to NumPy array
+tensor = torch.ones(7)
+numpy_tensor = tensor.numpy()
+tensor, numpy_tensor
+  # Output:
+    # (tensor([1., 1., 1., 1., 1., 1., 1.]),
+    #  array([1., 1., 1., 1., 1., 1., 1.], dtype=float32))
+
+# Change the tensor, what happens to 'numpy_tensor'?
+tensor = tensor + 1
+tensor, numpy_tensor
+  # Output:
+    # (tensor([2., 2., 2., 2., 2., 2., 2.]),
+    #  array([1., 1., 1., 1., 1., 1., 1.], dtype=float32))
