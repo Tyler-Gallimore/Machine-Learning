@@ -629,3 +629,40 @@ device
 torch.cuda.device_count()
   # Output:
     # 1
+
+## 3. Putting tensors (and models) on the GPU
+
+# The reason we want our tensors/models on the GPU is because using a GPU results in faster computations.
+
+# Create a tensor (default on the CPU)
+tensor = torch.tensor([1, 2, 3])
+
+# Tensor not on GPU
+print(tensor, tensor.device)
+  # Output:
+    # tensor([1, 2, 3]) cpu
+
+# Move tensor to GPU (if available)
+tensor_on_gpu = tensor.to(device)
+tensor_on_gpu
+  # Output:
+    # tensor([1, 2, 3], device='cuda:0')
+
+### 4. Moving tensors back to the CPU
+# If tensor is on GPU, can't transform it to NumPy
+tensor_on_gpu.numpy()
+  # Output:
+    # ---------------------------------------------------------------------------
+    # TypeError                                 Traceback (most recent call last)
+    # <ipython-input-10-f273530b6b64> in <cell line: 3>()
+    #       1 ### 4. Moving tensors back to the CPU
+    #       2 # If tensor is on GPU, can't transform it to NumPy
+    # ----> 3 tensor_on_gpu.numpy()
+
+    # TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.
+
+# To fix the GPU tensor with NumPy issue, we can first set it to the CPU
+tensor_back_on_cpu = tensor_on_gpu.cpu().numpy()
+tensor_back_on_cpu
+  # Output:
+    # array([1, 2, 3])
