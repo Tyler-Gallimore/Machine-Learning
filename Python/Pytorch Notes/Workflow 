@@ -115,8 +115,38 @@ def plot_predictions(train_data=X_train,
     # Plot the predictions if the exist
     plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
 
-# Show the legend
-plt.legend(prop={"size": 14});
+  # Show the legend
+  plt.legend(prop={"size": 14});
 
 plot_predictions();
 
+## 2. Build model
+
+# Our first PyTorch model
+
+# What our model does:
+
+# Start with random values (weight & bias)
+# Look at training data and adjust the random values to better represent (or get closer to) the ideal values (the weight & bias values we used to create the data)
+
+# How does it do so?
+
+# Through two main algorithms:
+# 1. Gradient descent
+# 2. Backpropagation
+
+from torch import nn
+# Create a linear regression model class
+class LinearRegressionModel(nn.Module): # <- almost everything in PyTorch inherits from nn.Module
+  def __init__(self):
+    super().__init__()
+    self.weights = nn.Parameter(torch.randn(1,
+                                            requires_grad=True,
+                                            dtype=torch.float))
+    self.bias = nn.Parameter(torch.randn(1,
+                                         requires_grad=True,
+                                         dtype=torch.float))
+    
+    # Forward method to define the computation in the model
+    def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data
+      return self.weights * x + self.bias # this is the linear regression formula
