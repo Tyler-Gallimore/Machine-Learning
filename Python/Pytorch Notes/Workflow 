@@ -147,9 +147,9 @@ class LinearRegressionModel(nn.Module): # <- almost everything in PyTorch inheri
                                          requires_grad=True, # <- can this parameter be updated via gradient descent?
                                          dtype=torch.float)) # <- PyTorch loves the datatype torch.float32
     
-    # Forward method to define the computation in the model
-    def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data
-      return self.weights * x + self.bias # this is the linear regression formula
+  # Forward method to define the computation in the model
+  def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data
+    return self.weights * x + self.bias # this is the linear regression formula
     
 ### PyTorch model building essentials
 
@@ -183,3 +183,43 @@ list(model_0.parameters())
 model_0.state_dict()
   # Output:
     # OrderedDict([('weights', tensor([0.3367])), ('bias', tensor([0.1288]))])
+
+### Making prediction using 'torch.inference_mode()'
+
+# To check our model's predictive power, let's see how well it predicts 'y_test' based on 'x_test'
+
+# When we pass data through our model, it's going to run it through the 'forward()' method
+
+# Make predictions with model
+with torch.inference_mode():
+  y_preds = model_0(X_test)
+
+y_preds
+  # Output:
+    # tensor([[0.3982],
+    #         [0.4049],
+    #         [0.4116],
+    #         [0.4184],
+    #         [0.4251],
+    #         [0.4318],
+    #         [0.4386],
+    #         [0.4453],
+    #         [0.4520],
+    #         [0.4588]])
+
+y_test
+  # Output:
+    # tensor([[0.8600],
+    #         [0.8740],
+    #         [0.8880],
+    #         [0.9020],
+    #         [0.9160],
+    #         [0.9300],
+    #         [0.9440],
+    #         [0.9580],
+    #         [0.9720],
+    #         [0.9860]])
+
+plot_predictions(predictions=y_preds)
+  # Output:
+    # Graph of the model
