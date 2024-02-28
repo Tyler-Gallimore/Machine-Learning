@@ -223,3 +223,22 @@ y_test
 plot_predictions(predictions=y_preds)
   # Output:
     # Graph of the model
+
+## 3. Train model
+
+# The whole idea of training is for a model to move from some *unkown* parameters (these may be random) to some *known* parameters
+
+# Or in other words from a poor representation of the data to a better representation of the data
+
+# One way to measure how poor or how wrong the models predictions are is to use a loss function
+
+# Note: Loss function may also be called cost function or criterion in different areas. For our case, we're going to refer to it a loss function.
+
+# Things we need to train:
+
+# Loss function: A function to measure how wrong your model's predictions are to the ideal output, lower is better
+# Optimizer: Takes into account the loss of a model and adjusts the model's parameters (e.g. weight & bias in our case) to improve the loss function
+
+# And specifically for PyTorch, we need:
+# A training loop
+# A testing loop
