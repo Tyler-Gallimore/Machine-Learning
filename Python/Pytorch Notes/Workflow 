@@ -242,3 +242,22 @@ plot_predictions(predictions=y_preds)
 # And specifically for PyTorch, we need:
 # A training loop
 # A testing loop
+
+list(model_0.parameters())
+  # Output:
+    # [Parameter containing:
+    #  tensor([0.3367], requires_grad=True),
+    #  Parameter containing:
+    #  tensor([0.1288], requires_grad=True)]
+
+# Check out our model's parameters (a parameter is a value that the model sets itself)
+model_0.state_dict()
+  # Output:
+    # OrderedDict([('weights', tensor([0.3367])), ('bias', tensor([0.1288]))])
+
+# Setup a loss function
+loss_fn = nn.L1Loss()
+
+# Setup an optimizer (stochastic gradient descent)
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.01) # lr = learning rate = possibly the most important hyperparameter you can set
