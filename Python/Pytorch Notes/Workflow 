@@ -11,6 +11,7 @@ what_were_covering = {1: "data (prepare and load)",
 import torch
 from torch import nn # nn contains all of PyTorch's building blocks for neural networks
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Check PyTorch version
 torch.__version__
@@ -275,6 +276,16 @@ optimizer = torch.optim.SGD(params=model_0.parameters(),
 # An epoch is one loop through the data... (this is a hyperparameter because we've set it ourselves)
 epochs = 1
 
+torch.manual_seed(42)
+
+# An epoch is one loop through the data... (this is a hyperparameter because we've set it ourselves)
+epochs = 200
+
+# Track different values
+epoch_count = []
+loss_values = []
+test_loss_values = []
+
 ### Training
 # 0. Loop through the data
 for epoch in range(epochs):
@@ -296,4 +307,80 @@ for epoch in range(epochs):
   # 5. Step the optimizer (perform gradient descent)
   optimizer.step() # by default how the optimizer changes will acculumate through the loop so... we have to zero them above in step 3 for the next iteration of the loop
 
-  # model_0.eval() # turns off gradient tracking
+  ### Testing
+  model_0.eval() # turns off different settings in the model not needed for evaluation/testing (dropout/batch norm layers)
+  with torch.inference_mode(): # turns off gradient tracking & a couple of more things behind the scenes
+    # 1. Do the forward pass 
+    test_pred = model_0(X_test)
+
+    # 2. Calculate the loss
+    test_loss = loss_fn(test_pred, y_test)
+  
+  # Pring out what's happening
+  if epoch % 10 == 0:
+    epoch_count.append(epoch)
+    loss_values.append(loss.numpy())
+    test_loss_values.append(test_loss)
+    print(f"Epoch: {epoch} | Loss: {loss} | Test loss: {test_loss}")
+    # Print out model state_dict()
+    print(model_0.state_dict())
+      # Output:
+        # Epoch: 0 | Loss: 0.31288138031959534 | Test loss: 0.48106518387794495
+        # OrderedDict([('weights', tensor([0.3406])), ('bias', tensor([0.1388]))])
+        # Epoch: 10 | Loss: 0.1976713240146637 | Test loss: 0.3463551998138428
+        # OrderedDict([('weights', tensor([0.3796])), ('bias', tensor([0.2388]))])
+        # Epoch: 20 | Loss: 0.08908725529909134 | Test loss: 0.21729660034179688
+        # OrderedDict([('weights', tensor([0.4184])), ('bias', tensor([0.3333]))])
+        # Epoch: 30 | Loss: 0.053148526698350906 | Test loss: 0.14464017748832703
+        # OrderedDict([('weights', tensor([0.4512])), ('bias', tensor([0.3768]))])
+        # Epoch: 40 | Loss: 0.04543796554207802 | Test loss: 0.11360953003168106
+        # OrderedDict([('weights', tensor([0.4748])), ('bias', tensor([0.3868]))])
+        # Epoch: 50 | Loss: 0.04167863354086876 | Test loss: 0.09919948130846024
+        # OrderedDict([('weights', tensor([0.4938])), ('bias', tensor([0.3843]))])
+        # Epoch: 60 | Loss: 0.03818932920694351 | Test loss: 0.08886633068323135
+        # OrderedDict([('weights', tensor([0.5116])), ('bias', tensor([0.3788]))])
+        # Epoch: 70 | Loss: 0.03476089984178543 | Test loss: 0.0805937647819519
+        # OrderedDict([('weights', tensor([0.5288])), ('bias', tensor([0.3718]))])
+        # Epoch: 80 | Loss: 0.03132382780313492 | Test loss: 0.07232122868299484
+        # OrderedDict([('weights', tensor([0.5459])), ('bias', tensor([0.3648]))])
+        # Epoch: 90 | Loss: 0.02788739837706089 | Test loss: 0.06473556160926819
+        # OrderedDict([('weights', tensor([0.5629])), ('bias', tensor([0.3573]))])
+        # Epoch: 100 | Loss: 0.024458957836031914 | Test loss: 0.05646304413676262
+        # OrderedDict([('weights', tensor([0.5800])), ('bias', tensor([0.3503]))])
+        # Epoch: 110 | Loss: 0.021020207554101944 | Test loss: 0.04819049686193466
+        # OrderedDict([('weights', tensor([0.5972])), ('bias', tensor([0.3433]))])
+        # Epoch: 120 | Loss: 0.01758546568453312 | Test loss: 0.04060482233762741
+        # OrderedDict([('weights', tensor([0.6141])), ('bias', tensor([0.3358]))])
+        # Epoch: 130 | Loss: 0.014155393466353416 | Test loss: 0.03233227878808975
+        # OrderedDict([('weights', tensor([0.6313])), ('bias', tensor([0.3288]))])
+        # Epoch: 140 | Loss: 0.010716589167714119 | Test loss: 0.024059748277068138
+        # OrderedDict([('weights', tensor([0.6485])), ('bias', tensor([0.3218]))])
+        # Epoch: 150 | Loss: 0.0072835334576666355 | Test loss: 0.016474086791276932
+        # OrderedDict([('weights', tensor([0.6654])), ('bias', tensor([0.3143]))])
+        # Epoch: 160 | Loss: 0.0038517764769494534 | Test loss: 0.008201557211577892
+        # OrderedDict([('weights', tensor([0.6826])), ('bias', tensor([0.3073]))])
+        # Epoch: 170 | Loss: 0.008932482451200485 | Test loss: 0.005023092031478882
+        # OrderedDict([('weights', tensor([0.6951])), ('bias', tensor([0.2993]))])
+        # Epoch: 180 | Loss: 0.008932482451200485 | Test loss: 0.005023092031478882
+        # OrderedDict([('weights', tensor([0.6951])), ('bias', tensor([0.2993]))])
+        # Epoch: 190 | Loss: 0.008932482451200485 | Test loss: 0.005023092031478882
+        # OrderedDict([('weights', tensor([0.6951])), ('bias', tensor([0.2993]))])
+
+# Plot the loss curves
+plt.plot(epoch_count, np.array(torch.tensor(loss_values).numpy()), label="Train loss")
+plt.plot(epoch_count, test_loss_values, label="Test loss")
+plt.title("Training and Test loss curves")
+plt.ylabel("Loss")
+plt.xlabel("Epochs")
+plt.legend();
+  # Output:
+    # A line graph showing the loss going down
+
+with torch.inference_mode():
+  y_preds_new = model_0(X_test)
+
+model_0.state_dict()
+  # Output:
+    # OrderedDict([('weights', tensor([0.6990])), ('bias', tensor([0.3093]))])
+
+# Two line charts are printed out with plot_predictions(predictions=y_preds_new);  one before and one after the training to show how far it improves.
