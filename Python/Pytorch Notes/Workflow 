@@ -384,3 +384,29 @@ model_0.state_dict()
     # OrderedDict([('weights', tensor([0.6990])), ('bias', tensor([0.3093]))])
 
 # Two line charts are printed out with plot_predictions(predictions=y_preds_new);  one before and one after the training to show how far it improves.
+
+## Saving a model in PyTorch
+# There are three main methods for saving and loading models in PyTorch:
+#   1. 'torch.save()' - Allows you to save a PyTorch object in Python's pickle format
+#   2. 'torch.load()' - Allows you to load a saved PyTorch object
+#   3. 'torch.nn.Module.load_state_dict()' - This allows you to load a model's saved state dictionary
+
+# Saving our PyTorch model
+from pathlib import Path
+
+# Note: This code was being performed on Google Colab, may need adjusted for other devices
+
+# 1. Create models directory
+MODEL_PATH = Path("models")
+MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+# 2. Create model save path
+MODEL_NAME = "01_pytorch_workflow_model_0.pth"
+MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
+
+# 3. Save the model state dict
+print(f"Saving model to: {MODEL_SAVE_PATH}")
+torch.save(obj=model_0.state_dict(),
+           f=MODEL_SAVE_PATH)
+  # Output:
+    # Saving model to: models/01_pytorch_workflow_model_0.pth
