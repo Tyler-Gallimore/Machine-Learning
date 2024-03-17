@@ -122,3 +122,49 @@ X_train, X_test, y_train, y_test = train_test_split(X,
 len(X_train), len(X_test), len(y_train), len(y_test)
   # Output:
     # (800, 200, 800, 200)
+
+## 2. Building a model
+
+# Let's build a model to classify our blue and red dots.
+
+# To do so, we want to:
+# 1. Setup device agnostic code so our code will run on an accelerator (GPU) if there is one
+# 2. Construct a model (by sublcassing 'nn.Module')
+# 3. Define a loss function and optimizer
+# 4. Create a training and test loop
+
+# Import PyTorch and nn
+import torch
+from torch import nn
+
+# Make device agnostic code
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Now we've setup device agnostic code, let's create a model that:
+
+# 1. Subclass 'nn.module' (almost all models in PyTorch sublcass 'nn.module')
+# 2. Create 2 'nn.Linear()' layers that are capable of handling the shapes of our data
+# 3. Defines a 'forward()' method that outlines the forward pass (or forward computation) of the model
+# 4. Instatiate an instance of our model class and send it to the target device
+
+from sklearn import datasets
+# 1. Construct a model that sublcasses nn.module
+class CircleModelV0(nn.Module):
+  def __init__(self):
+    super().__init__()
+    # 2. Create 2 nn.Linear layers capable of handling the shapes of our data
+    self.layer_1 = nn.Linear(in_features=2, out_features=5) # Takes in 2 features and upscales to 5 features
+    self.layer_2 = nn.Linear(in_features=5, out_features=1) # Takes in 5 features from previous layer and outputs a single feature (same shape as y)
+  
+  # 3. Define a forward() method that outlines the forward pass
+  def forward(self, x):
+    return self.layer_2(self.layer_1(x)) # x -> layer_1 -> layer_2 -> output
+
+# 4. Instantiate an instance of our model class and send it to the target device
+model_0 = CircleModelV0().to(device)
+model_0
+  # Output:
+    # CircleModelV0(
+    #  (layer_1): Linear(in_features=2, out_features=5, bias=True)
+    #  (layer_2): Linear(in_features=5, out_features=1, bias=True)
+    # )
