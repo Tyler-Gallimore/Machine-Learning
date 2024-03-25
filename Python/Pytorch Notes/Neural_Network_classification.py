@@ -168,3 +168,56 @@ model_0
     #  (layer_1): Linear(in_features=2, out_features=5, bias=True)
     #  (layer_2): Linear(in_features=5, out_features=1, bias=True)
     # )
+
+# Let's replicate the model above using nn.Sequential()
+model_0 = nn.Sequential(
+    nn.Linear(in_features=2, out_features=5),
+    nn.Linear(in_features=5, out_features=1)
+).to(device)
+
+model_0
+  # Output:
+    # Sequential(
+    #   (0): Linear(in_features=2, out_features=5, bias=True)
+    #   (1): Linear(in_features=5, out_features=1, bias=True)
+    # )
+
+model_0.state_dict()
+  # Output:
+    # OrderedDict([('0.weight',
+    #          tensor([[-0.7042, -0.6584],
+    #                  [-0.4735,  0.5804],
+    #                  [ 0.5455, -0.6490],
+    #                  [-0.2957,  0.5223],
+    #                  [-0.5109,  0.6719]], device='cuda:0')),
+    #         ('0.bias',
+    #          tensor([ 0.3529, -0.3036,  0.5753,  0.0705, -0.0217], device='cuda:0')),
+    #         ('1.weight',
+    #          tensor([[-0.0942,  0.4287,  0.2685, -0.1577,  0.3984]], device='cuda:0')),
+    #         ('1.bias', tensor([-0.4143], device='cuda:0'))])
+
+# Make predictions
+with torch.inference_mode():
+  untrained_preds = model_0(X_test.to(device))
+print(f"Length of predictions: {len(untrained_preds)}, Shape: {untrained_preds.shape}")
+print(f"Length of test samples: {len(X_test)}, Shape: {X_test.shape}")
+print(f"\nFirst 10 predictions:\n{torch.round(untrained_preds[:10])}")
+print(f"\nFirst 10 labels:\n{y_test[:10]}")
+  # Output:
+    # Length of predictions: 200, Shape: torch.Size([200, 1])
+    # Length of test samples: 200, Shape: torch.Size([200, 2])
+
+    # First 10 predictions:
+    # tensor([[-0.],
+    #         [-0.],
+    #         [-0.],
+    #         [-0.],
+    #         [-1.],
+    #         [-1.],
+    #         [-0.],
+    #         [-1.],
+    #         [-0.],
+    #         [-0.]], device='cuda:0')
+
+    # First 10 labels:
+    # tensor([1., 0., 1., 0., 1., 1., 0., 0., 1., 0.])
